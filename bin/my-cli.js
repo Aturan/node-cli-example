@@ -12,6 +12,20 @@ main();
 
 async function main() {
   const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+
+  if (pkg['my-cli'] && pkg['my-cli']['check-baidu-id']) {
+    const configPath = path.join(process.cwd(), 'config.json');
+    if (!fs.existsSync(configPath)) {
+      shelljs.echo('找不到config.json');
+      shelljs.exit(1);
+    }
+    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    if (!config['baidu-id']) {
+      shelljs.echo('config.json缺少属性[baidu-id]');
+      shelljs.exit(1);
+    }
+  }
+
   const { version } = await inquirer.prompt([
     {
       type: 'list',
