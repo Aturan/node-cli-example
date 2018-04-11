@@ -29,6 +29,9 @@ async function main() {
     shelljs.echo('已取消执行构建发布流程');
     shelljs.exit(0);
   }
+  
+  // 拉取最新版本
+  command('git pull');
 
   if (pkg['my-cli'] && pkg['my-cli']['check-baidu-id']) {
     const  config = readJSON('config.json');
@@ -55,8 +58,7 @@ async function main() {
       ]
     }
   ]);
-  // 拉取最新版本
-  command('git pull');
+  
   // 运行测试
   command('npm test');
   //通过npm version更新版本号，但不自动添加git tag，而是在构建完成后由cli工具添加
